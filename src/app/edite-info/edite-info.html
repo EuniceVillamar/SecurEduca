@@ -1,0 +1,33 @@
+<div class="info-container">
+  <h2>Editar Modulo</h2>
+
+  <div class="form-group">
+    <label for="NModulo">N° Modulo</label>
+    <input type="text" [(ngModel)]="NModulo" disabled />
+  </div>
+
+  <div class="form-group">
+    <label for="Nombre">Nombre Modulo</label>
+    <input type="text" [(ngModel)]="Nombre" />
+  </div>
+
+  <div class="form-group">
+    <label for="Responsable">Responsable</label>
+    <input type="text" [(ngModel)]="Responsable" />
+  </div>
+
+  <div class="form-group">
+    <label for="Objetivo1">Objetivo 1</label>
+    <input type="text" [(ngModel)]="Objetivo1" />
+  </div>
+
+  <div class="form-group">
+    <label for="Objetivo2">Objetivo 2</label>
+    <input type="text" [(ngModel)]="Objetivo2" />
+  </div>
+
+  <div class="botones">
+    <button class="btn btn-primary btn-sm" (click)="guardarInfo()">Guardar</button>
+    <button class="btn btn-danger btn-sm" (click)="cancelarEdit()">Cancelar</button>
+  </div>
+</div>
