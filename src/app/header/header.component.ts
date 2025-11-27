@@ -4,10 +4,6 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { GlobalService } from '../services/global.service';
-import { Routes } from '@angular/router';
-import { PrincipalPage } from '../principal-page/principal-page';
-
-const routes: Routes = [{ path: 'principal-page', component: PrincipalPage }];
 
 @Component({
   selector: 'app-header',
