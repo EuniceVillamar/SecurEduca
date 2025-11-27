@@ -15,6 +15,7 @@
 .welcome-title {
   color: #1a1a2e;
   font-size: 2.5rem;
+  line-height: 1.2;
   font-weight: 700;
   margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -178,4 +179,3 @@
     padding: 1.5rem;
   }
 }
-

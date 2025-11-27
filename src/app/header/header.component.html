@@ -6,7 +6,7 @@
     <button class="btn-secondary" (click)="onAcercaDe()">Acerca de</button>
     <ng-container *ngIf="isLoggedIn; else loginButton">
       <span class="user-welcome">Bienvenido, {{ userName }}</span>
-      <button class="btn-primary" routerLink="/principal-page">Tabla- Autores</button>
+      <button class="btn-primary" routerLink="/principal-page">Tabla Autores</button>
       <button class="btn-primary" (click)="logout()">Cerrar Sesión</button>
     </ng-container>
     <ng-template #loginButton>
