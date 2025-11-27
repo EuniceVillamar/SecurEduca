@@ -1,0 +1,23 @@
+.footer {
+  background-color: #1a1a2e;
+  color: white;
+  padding: 2rem 3rem;
+  text-align: center;
+}
+
+.footer-content p {
+  margin: 0.5rem 0;
+  color: #ccc;
+}
+
+.footer-content p:first-child {
+  font-weight: 600;
+  color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 1rem;
+  }
+}
