@@ -4,29 +4,30 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { GlobalService } from '../services/global.service';
+import { Routes } from '@angular/router';
+import { PrincipalPage } from '../principal-page/principal-page';
+
+const routes: Routes = [{ path: 'principal-page', component: PrincipalPage }];
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   userName = '';
   private authSubscription?: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    public globalService: GlobalService
-  ) {}
+  constructor(private authService: AuthService, public globalService: GlobalService) {}
 
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn();
     this.userName = this.authService.getCurrentUser();
 
-    this.authSubscription = this.authService.getAuthState().subscribe(authState => {
+    this.authSubscription = this.authService.getAuthState().subscribe((authState) => {
       this.isLoggedIn = authState.isAuthenticated;
       this.userName = authState.user;
     });

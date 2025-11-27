@@ -1,0 +1,78 @@
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.tabla-container {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 5px;
+}
+
+.mat-elevation-z8 {
+  background-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(20, 30, 60, 0.1);
+}
+
+.celda-contenido {
+  color: black;
+}
+
+.celda-cabeza {
+  color: black;
+}
+
+.btn {
+  padding: 4px 10px;
+  margin-right: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.input-container {
+  margin-top: 75px;
+  margin-bottom: 10px;
+  margin-left: 1300px;
+  font-size: 15px;
+  background-color: #fff;
+  padding: 3px 20px;
+  width: 400px;
+  text-align: center;
+  display: flex;
+}
+
+.input-container label {
+  padding-top: 20px;
+  padding-right: 10px;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  border: 1px solid #211a88;
+}
+.input-container input:focus {
+  border: 2px solid #4a41c9;
+  outline: none;
+}
+
+.input-container button {
+  margin-top: 13px;
+  margin-left: 10px;
+  height: 40px;
+  color: black;
+  border-color: black;
+}
+
+.input-container button:hover {
+  border-color: rgb(255, 72, 72);
+  color: rgb(255, 72, 72);
+}
+.acciones-cell {
+  margin-top: 21px;
+  margin-left: 10px;
+  height: 30px;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}

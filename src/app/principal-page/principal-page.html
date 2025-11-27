@@ -1,0 +1,52 @@
+<div class="input-container">
+  <label for="busqueda">Filtrar:</label>
+
+  <input
+    type="text"
+    id="busqueda"
+    name="busqueda"
+    placeholder="Escribe aquí..."
+    [(ngModel)]="filtroTexto"
+  />
+
+  <button class="btn" (click)="aplicarFiltro()">Buscar</button>
+</div>
+<div class="tabla-container">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <ng-container matColumnDef="NModulo">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">N° Modulo</th>
+      <td mat-cell *matCellDef="let element" class="celda-contenido">{{ element.NModulo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Nombre">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">Nombre Modulo</th>
+      <td mat-cell *matCellDef="let element" class="celda-contenido">{{ element.Nombre }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Responsable">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">Responsable</th>
+      <td mat-cell *matCellDef="let element" class="celda-contenido">{{ element.Responsable }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Objetivo1">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">Objetivo 1</th>
+      <td mat-cell *matCellDef="let element" class="celda-contenido">{{ element.Objetivo1 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Objetivo2">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">Objetivo 2</th>
+      <td mat-cell *matCellDef="let element" class="celda-contenido">{{ element.Objetivo2 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Acciones">
+      <th mat-header-cell *matHeaderCellDef class="celda-cabeza">Acciones</th>
+      <td mat-cell *matCellDef="let element" class="acciones-cell">
+        <button class="btn btn-primary btn-sm" (click)="editarModulo(element)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="eliminarModulo(element)">Eliminar</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
