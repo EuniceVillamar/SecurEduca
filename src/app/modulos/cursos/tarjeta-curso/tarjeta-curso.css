@@ -1,0 +1,13 @@
+.lesson-card {
+  width: 22rem;
+  margin: 10px;
+  transition: transform 0.2s;
+}
+
+.lesson-card:hover {
+  transform: scale(1.03);
+}
+
+button {
+  font-size: 0.9rem;
+}
