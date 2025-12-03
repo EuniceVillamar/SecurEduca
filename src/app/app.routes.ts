@@ -3,7 +3,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { PrincipalPage } from './principal-page/principal-page';
-import { CursosTeoricos } from './modulos/cursos-teoricos/cursos-teoricos';
+import { CursosTeoricos } from './modulos/cursos/cursos-teoricos/cursos-teoricos';
 import { EvaluadorContrasenas } from './modulos/evaluador-contrasenas/evaluador-contrasenas';
 import { Simulaciones } from './modulos/simulaciones/simulaciones';
 import { Evaluaciones } from './modulos/evaluaciones/evaluaciones';

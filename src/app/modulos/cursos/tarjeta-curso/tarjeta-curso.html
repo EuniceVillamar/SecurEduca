@@ -1,0 +1,12 @@
+<div class="card lesson-card">
+  <div class="card-body">
+    <h5 class="card-title">{{ Curso.title }}</h5>
+    <p class="card-text">{{ Curso.description }}</p>
+
+    <button class="btn btn-info me-2" (click)="verMas()">Ver más</button>
+
+    <button class="btn btn-success" [disabled]="Curso.completed" (click)="completar()">
+      {{ Curso.completed ? 'Completada ✓' : 'Marcar como completada' }}
+    </button>
+  </div>
+</div>
