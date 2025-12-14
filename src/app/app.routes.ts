@@ -4,10 +4,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { PrincipalPage } from './principal-page/principal-page';
 import { CursosTeoricos } from './modulos/cursos/cursos-teoricos/cursos-teoricos';
-import { EvaluadorContrasenas } from './modulos/evaluador-contrasenas/evaluador-contrasenas';
+import { EvaluadorContrasenas } from './modulos/Evaluador-ElizabethVillamar/evaluador-contrasenas/evaluador-contrasenas';
 import { Simulaciones } from './modulos/simulaciones/simulaciones';
 import { Evaluaciones } from './modulos/evaluaciones/evaluaciones';
-import { Progreso } from './modulos/progreso/progreso';
+import { ConsejosRecomendaciones } from './modulos/Consejos-AlberthSilva/consejos-recomendaciones/consejos-recomendaciones';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -18,6 +18,10 @@ export const routes: Routes = [
   { path: 'evaluador-contrasenas', component: EvaluadorContrasenas, canActivate: [authGuard] },
   { path: 'simulaciones', component: Simulaciones, canActivate: [authGuard] },
   { path: 'evaluaciones', component: Evaluaciones, canActivate: [authGuard] },
-  { path: 'progreso', component: Progreso, canActivate: [authGuard] },
+  {
+    path: 'consejos-recomendaciones',
+    component: ConsejosRecomendaciones,
+    canActivate: [authGuard],
+  },
   { path: '**', redirectTo: '/dashboard' },
 ];

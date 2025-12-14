@@ -1,0 +1,269 @@
+<div class="evaluador-container">
+  <div class="header-section">
+    <h1 class="page-title">Evaluador de Contraseñas</h1>
+  </div>
+
+  <div class="tabs-container">
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'evaluador'"
+      (click)="setTab('evaluador')"
+    >
+      Evaluador de Contraseñas
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'generador'"
+      (click)="setTab('generador')"
+    >
+      Generador de Contraseñas
+    </button>
+  </div>
+
+  <!-- Evaluador -->
+  <div *ngIf="activeTab === 'evaluador'" class="tab-content">
+    <div class="input-section">
+      <div class="password-input-wrapper">
+        <input
+          type="{{ showPassword ? 'text' : 'password' }}"
+          [(ngModel)]="password"
+          class="password-input"
+          placeholder="Ingresa tu contraseña para evaluarla..."
+        />
+        <button class="eye-button" (click)="togglePasswordVisibility()">
+          <span class="eye-icon">{{ showPassword ? '◎' : '◉' }}</span>
+        </button>
+      </div>
+
+      <div class="strength-indicator" *ngIf="password.length > 0">
+        <div class="strength-bar-container">
+          <div
+            class="strength-bar"
+            [style.width.%]="evaluatePassword().strength"
+            [style.background-color]="getStrengthColor()"
+          ></div>
+        </div>
+        <div class="strength-label">
+          <span [style.color]="getStrengthColor()">
+            {{
+              evaluatePassword().level === 'muy-debil'
+                ? 'Muy Débil'
+                : evaluatePassword().level === 'debil'
+                ? 'Débil'
+                : evaluatePassword().level === 'media'
+                ? 'Media'
+                : evaluatePassword().level === 'fuerte'
+                ? 'Fuerte'
+                : 'Muy Fuerte'
+            }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-panel" *ngIf="password.length > 0">
+      <h3 class="panel-title">Criterios de Seguridad</h3>
+      <div class="metrics-grid">
+        <div class="metric-card" [class.valid]="evaluatePassword().criteria.length">
+          <div class="metric-icon">{{ evaluatePassword().criteria.length ? '✓' : '✗' }}</div>
+          <div class="metric-info">
+            <h4>Longitud</h4>
+            <p>{{ password.length >= 12 ? 'Mínimo 12 caracteres' : 'Requiere 12+ caracteres' }}</p>
+          </div>
+        </div>
+
+        <div
+          class="metric-card"
+          [class.valid]="
+            evaluatePassword().criteria.uppercase && evaluatePassword().criteria.lowercase
+          "
+        >
+          <div class="metric-icon">
+            {{
+              evaluatePassword().criteria.uppercase && evaluatePassword().criteria.lowercase
+                ? '✓'
+                : '✗'
+            }}
+          </div>
+          <div class="metric-info">
+            <h4>Mayúsculas/Minúsculas</h4>
+            <p>
+              {{
+                evaluatePassword().criteria.uppercase && evaluatePassword().criteria.lowercase
+                  ? 'Ambas incluidas'
+                  : 'Faltan mayúsculas o minúsculas'
+              }}
+            </p>
+          </div>
+        </div>
+
+        <div class="metric-card" [class.valid]="evaluatePassword().criteria.numbers">
+          <div class="metric-icon">{{ evaluatePassword().criteria.numbers ? '✓' : '✗' }}</div>
+          <div class="metric-info">
+            <h4>Números</h4>
+            <p>{{ evaluatePassword().criteria.numbers ? 'Incluidos' : 'No incluidos' }}</p>
+          </div>
+        </div>
+
+        <div class="metric-card" [class.valid]="evaluatePassword().criteria.symbols">
+          <div class="metric-icon">{{ evaluatePassword().criteria.symbols ? '✓' : '✗' }}</div>
+          <div class="metric-info">
+            <h4>Caracteres Especiales</h4>
+            <p>{{ evaluatePassword().criteria.symbols ? 'Incluidos' : 'No incluidos' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="score-display">
+        <div class="score-stars">
+          <span
+            *ngFor="let i of [1, 2, 3, 4, 5]"
+            class="star"
+            [class.filled]="i <= Math.ceil(evaluatePassword().score)"
+          >
+            ✓
+          </span>
+        </div>
+        <p class="score-text">Puntuación: {{ evaluatePassword().score }}/6</p>
+      </div>
+    </div>
+
+    <div class="recommendations-panel" *ngIf="password.length > 0">
+      <h3 class="panel-title">Recomendaciones</h3>
+      <ul class="recommendations-list">
+        <li *ngFor="let rec of evaluatePassword().recommendations">{{ rec }}</li>
+      </ul>
+
+      <div class="examples-section">
+        <h4>Ejemplos de contraseñas fuertes:</h4>
+        <div class="example-passwords">
+          <code>MiCasa2024!Segura#</code>
+          <code>P@ssw0rd$tr0ng!2024</code>
+          <code>Fr@seL0ng@YMem0r@ble</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generador -->
+  <div *ngIf="activeTab === 'generador'" class="tab-content">
+    <div class="generator-header">
+      <h2 class="generator-title">Generador Seguro</h2>
+    </div>
+
+    <div class="controls-section">
+      <div class="control-group">
+        <label class="control-label">
+          Longitud: <span class="length-value">{{ passwordLength }}</span>
+        </label>
+        <input
+          type="range"
+          [(ngModel)]="passwordLength"
+          min="8"
+          max="32"
+          class="length-slider"
+          (input)="generatePassword()"
+        />
+        <div class="slider-labels">
+          <span>8</span>
+          <span>32</span>
+        </div>
+      </div>
+
+      <div class="toggle-group">
+        <label class="toggle-item">
+          <input type="checkbox" [(ngModel)]="includeUppercase" (change)="generatePassword()" />
+          <span class="toggle-label">Mayúsculas</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" [(ngModel)]="includeLowercase" (change)="generatePassword()" />
+          <span class="toggle-label">Minúsculas</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" [(ngModel)]="includeNumbers" (change)="generatePassword()" />
+          <span class="toggle-label">Números</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" [(ngModel)]="includeSymbols" (change)="generatePassword()" />
+          <span class="toggle-label">Símbolos</span>
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" [(ngModel)]="excludeSimilar" (change)="generatePassword()" />
+          <span class="toggle-label">Excluir similares (i, l, 1, L, o, 0, O)</span>
+        </label>
+      </div>
+
+      <div class="theme-selector">
+        <label class="control-label">Tema:</label>
+        <div class="theme-buttons">
+          <button
+            class="theme-btn"
+            [class.active]="passwordTheme === 'maxima'"
+            (click)="passwordTheme = 'maxima'; generatePassword()"
+          >
+            Máxima Seguridad
+          </button>
+          <button
+            class="theme-btn"
+            [class.active]="passwordTheme === 'facil'"
+            (click)="passwordTheme = 'facil'; generatePassword()"
+          >
+            Fácil de Recordar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="generator-display">
+      <div class="password-vault">
+        <div class="vault-display">
+          <input
+            type="{{ showGeneratedPassword ? 'text' : 'password' }}"
+            [value]="generatedPassword"
+            readonly
+            class="vault-input"
+            placeholder="Tu contraseña generada aparecerá aquí..."
+          />
+          <button class="vault-eye-button" (click)="toggleGeneratedPasswordVisibility()">
+            <span>{{ showGeneratedPassword ? '◎' : '◉' }}</span>
+          </button>
+        </div>
+
+        <div class="vault-actions">
+          <button class="action-btn regenerate-btn" (click)="regeneratePassword()">
+            <span></span> Regenerar
+          </button>
+          <button class="action-btn copy-btn" (click)="copyPassword()" [class.copied]="copied">
+            <span>{{ copied ? '✓' : '' }}</span> {{ copied ? 'Copiado!' : 'Copiar' }}
+          </button>
+        </div>
+
+        <div class="generated-strength" *ngIf="generatedPassword">
+          <div class="strength-bar-container">
+            <div
+              class="strength-bar"
+              [style.width.%]="getGeneratedStrength()"
+              [style.background-color]="
+                getGeneratedStrength() >= 80
+                  ? '#20c997'
+                  : getGeneratedStrength() >= 60
+                  ? '#28a745'
+                  : '#ffc107'
+              "
+            ></div>
+          </div>
+          <span class="strength-text"
+            >Fortaleza:
+            {{
+              getGeneratedStrength() >= 80
+                ? 'Excelente'
+                : getGeneratedStrength() >= 60
+                ? 'Buena'
+                : 'Media'
+            }}</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
