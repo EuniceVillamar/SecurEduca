@@ -1,9 +1,254 @@
-<div>
-  <header>
-    <h1>Simulaciones</h1>
+<div class="simulaciones-container">
+  <header class="header">
+    <h1>Simulaciones de Phishing</h1>
     <p>
       Desarrollar simulaciones interactivas que permitan a los usuarios experimentar escenarios
       reales de ataques y defensas en ciberseguridad.
     </p>
   </header>
+
+  <!-- Navegación por tabs -->
+  <div class="tabs">
+    <button class="tab" [class.active]="vistaActual === 'enviar'" (click)="cambiarVista('enviar')">
+      Correos Simulados
+    </button>
+    <button
+      class="tab"
+      [class.active]="vistaActual === 'interacciones'"
+      (click)="cambiarVista('interacciones')"
+    >
+      Registro de Interacciones
+    </button>
+  </div>
+
+  <!-- Vista: Enviar Correos -->
+  <div *ngIf="vistaActual === 'enviar'" class="vista-contenido">
+    <div class="seccion-header">
+      <h2>Gestión de Correos Simulados</h2>
+      <button class="btn btn-primary" (click)="toggleFormCorreo()">
+        {{ mostrarFormCorreo ? 'Cancelar' : 'Nuevo Correo' }}
+      </button>
+    </div>
+
+    <!-- Formulario de nuevo correo -->
+    <div *ngIf="mostrarFormCorreo" class="formulario-card">
+      <h3>Crear Correo Simulado de Phishing</h3>
+      <form (submit)="enviarCorreo(); $event.preventDefault()">
+        <div class="form-group">
+          <label for="asunto">Asunto *</label>
+          <input
+            type="text"
+            id="asunto"
+            [(ngModel)]="nuevoCorreo.asunto"
+            name="asunto"
+            placeholder="Ej: Actualización urgente de seguridad"
+            required
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="remitente">Remitente *</label>
+            <input
+              type="email"
+              id="remitente"
+              [(ngModel)]="nuevoCorreo.remitente"
+              name="remitente"
+              placeholder="soporte@banco.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="destinatario">Destinatario *</label>
+            <input
+              type="email"
+              id="destinatario"
+              [(ngModel)]="nuevoCorreo.destinatario"
+              name="destinatario"
+              placeholder="usuario@empresa.com"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="contenido">Contenido del correo *</label>
+          <textarea
+            id="contenido"
+            [(ngModel)]="nuevoCorreo.contenido"
+            name="contenido"
+            rows="4"
+            placeholder="Escriba el contenido del correo simulado..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="linkPhishing">Link de Phishing</label>
+          <input
+            type="text"
+            id="linkPhishing"
+            [(ngModel)]="nuevoCorreo.linkPhishing"
+            name="linkPhishing"
+            placeholder="http://sitio-falso.fake/login"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Enviar Correo Simulado</button>
+          <button type="button" class="btn btn-secondary" (click)="toggleFormCorreo()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Lista de correos -->
+    <div class="correos-lista">
+      <div *ngIf="correos.length === 0" class="empty-state">
+        <p>No hay correos simulados. Crea uno nuevo para comenzar.</p>
+      </div>
+
+      <div *ngFor="let correo of correos" class="correo-card">
+        <div class="correo-header">
+          <h3>{{ correo.asunto }}</h3>
+          <button class="btn-delete" (click)="eliminarCorreo(correo.id)" title="Eliminar">✕</button>
+        </div>
+        <div class="correo-info">
+          <p><strong>De:</strong> {{ correo.remitente }}</p>
+          <p><strong>Para:</strong> {{ correo.destinatario }}</p>
+          <p><strong>Enviado:</strong> {{ formatearFecha(correo.fechaEnvio) }}</p>
+        </div>
+        <div class="correo-contenido">
+          <p>{{ correo.contenido }}</p>
+        </div>
+        <div *ngIf="correo.linkPhishing" class="correo-link">
+          <strong>Link:</strong> <code>{{ correo.linkPhishing }}</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista: Interacciones -->
+  <div *ngIf="vistaActual === 'interacciones'" class="vista-contenido">
+    <!-- Estadísticas -->
+    <div class="estadisticas">
+      <h2>Estadísticas de Interacciones</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-valor">{{ estadisticas.total }}</div>
+          <div class="stat-label">Total Interacciones</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-valor">{{ estadisticas.clics }}</div>
+          <div class="stat-label">Clics en Links ({{ estadisticas.tasaExito }}%)</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-valor">{{ estadisticas.reportados }}</div>
+          <div class="stat-label">Reportados ({{ estadisticas.tasaReportados }}%)</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-valor">{{ estadisticas.ignorados }}</div>
+          <div class="stat-label">Ignorados</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion-header">
+      <h2>Registro de Interacciones</h2>
+      <button class="btn btn-primary" (click)="toggleFormInteraccion()">
+        {{ mostrarFormInteraccion ? 'Cancelar' : 'Nueva Interacción' }}
+      </button>
+    </div>
+
+    <!-- Formulario de nueva interacción -->
+    <div *ngIf="mostrarFormInteraccion" class="formulario-card">
+      <h3>Registrar Interacción</h3>
+      <form (submit)="registrarInteraccion(); $event.preventDefault()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="correoId">Correo relacionado *</label>
+            <select id="correoId" [(ngModel)]="nuevaInteraccion.correoId" name="correoId" required>
+              <option [value]="0">Seleccione un correo</option>
+              <option *ngFor="let correo of correos" [value]="correo.id">
+                {{ correo.asunto }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="usuario">Usuario *</label>
+            <input
+              type="text"
+              id="usuario"
+              [(ngModel)]="nuevaInteraccion.usuario"
+              name="usuario"
+              placeholder="nombre.usuario"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="accion">Acción del usuario *</label>
+          <select id="accion" [(ngModel)]="nuevaInteraccion.accion" name="accion" required>
+            <option value="clic">Hizo clic en el link</option>
+            <option value="reportado">Reportó como phishing</option>
+            <option value="ignorado">Ignoró el correo</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="detalles">Detalles adicionales</label>
+          <textarea
+            id="detalles"
+            [(ngModel)]="nuevaInteraccion.detalles"
+            name="detalles"
+            rows="3"
+            placeholder="Información adicional sobre la interacción..."
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Registrar Interacción</button>
+          <button type="button" class="btn btn-secondary" (click)="toggleFormInteraccion()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Tabla de interacciones -->
+    <div class="interacciones-tabla">
+      <div *ngIf="interacciones.length === 0" class="empty-state">
+        <p>No hay interacciones registradas.</p>
+      </div>
+
+      <table *ngIf="interacciones.length > 0">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Usuario</th>
+            <th>Correo</th>
+            <th>Acción</th>
+            <th>Detalles</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let interaccion of interacciones">
+            <td>{{ formatearFecha(interaccion.fechaInteraccion) }}</td>
+            <td>{{ interaccion.usuario }}</td>
+            <td>{{ obtenerNombreCorreo(interaccion.correoId) }}</td>
+            <td>
+              <span class="badge" [class]="'badge-' + interaccion.accion">
+                {{ interaccion.accion }}
+              </span>
+            </td>
+            <td>{{ interaccion.detalles || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
