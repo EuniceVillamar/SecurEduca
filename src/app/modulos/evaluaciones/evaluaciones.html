@@ -1,9 +1,122 @@
-<div>
-  <header>
-    <h1>Evaluaciones</h1>
-    <p>
-      Implementar un sistema de evaluaciones para medir el progreso de los usuarios a través de
-      tests y cuestionarios.
-    </p>
-  </header>
+<!-- ================= PRESENTACIÓN ================= -->
+<div *ngIf="mostrarPresentacion" class="container py-5">
+  <h1 class="fw-bold mb-2">Evaluaciones de Conocimiento</h1>
+  <p class="text-muted fs-5">
+    Pon a prueba tus conocimientos en <strong>seguridad digital</strong>.
+  </p>
+
+  <!-- TARJETAS INFORMATIVAS -->
+  <div class="row g-4 my-4">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body fw-semibold">15 preguntas</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body fw-semibold">Preguntas aleatorias</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body fw-semibold">Tiempo limitado</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm">
+        <div class="card-body fw-semibold">Resultado final</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INDICACIONES -->
+  <div class="alert alert-light border">
+    <ul class="mb-0">
+      <li>Las preguntas se seleccionan de forma aleatoria</li>
+      <li>Cada pregunta tiene un tiempo límite</li>
+      <li>No es posible retroceder entre preguntas</li>
+      <li>El resultado se muestra al finalizar</li>
+    </ul>
+  </div>
+
+  <!-- BENEFICIOS -->
+  <div class="row mb-5">
+    <div class="col-md-10">
+      <h4 class="fw-bold mb-3">Beneficios de realizar esta evaluación</h4>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="alert alert-secondary">Refuerzas tus conocimientos en seguridad digital</div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="alert alert-secondary">Practicas bajo presión de tiempo real</div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="alert alert-secondary">Evalúas tu capacidad de respuesta rápida</div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="alert alert-secondary">Obtienes un resultado inmediato</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTA -->
+  <div class="row mb-4">
+    <div class="col-md-9">
+      <div class="alert alert-light border">
+        <strong>Consejo:</strong>
+        Concéntrate en cada pregunta. El tiempo es limitado y no podrás volver atrás.
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN -->
+  <div class="text-center mt-4">
+    <button class="btn btn-lg btn-primary px-5" (click)="comenzar()">Comenzar evaluación</button>
+  </div>
+</div>
+
+<!-- ================= PREGUNTAS ================= -->
+<div *ngIf="mostrarPreguntas" class="container py-5">
+  <div class="card shadow-lg mx-auto" style="max-width: 700px">
+    <div class="card-body">
+      <div class="d-flex justify-content-between mb-3">
+        <span> Pregunta {{ preguntaActual + 1 }} / {{ preguntasSeleccionadas.length }} </span>
+        <span class="text-danger fw-bold"> {{ tiempoRestante }} s </span>
+      </div>
+
+      <h4 class="mb-4">
+        {{ preguntasSeleccionadas[preguntaActual].pregunta }}
+      </h4>
+
+      <div class="d-grid gap-3">
+        <button
+          class="btn btn-outline-primary"
+          *ngFor="let opcion of preguntasSeleccionadas[preguntaActual].opciones; let i = index"
+          (click)="responder(i)"
+        >
+          {{ opcion }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= RESULTADO ================= -->
+<div *ngIf="mostrarResultado" class="container py-5 text-center">
+  <h2 class="fw-bold">Evaluación finalizada</h2>
+
+  <p class="fs-4">
+    Puntaje obtenido:
+    <strong>{{ puntaje }} / {{ preguntasSeleccionadas.length }}</strong>
+  </p>
+
+  <button class="btn btn-primary mt-3" (click)="reiniciar()">Volver a intentar</button>
 </div>
