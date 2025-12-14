@@ -1,0 +1,101 @@
+<div>
+  <div>
+    <div class="box-header">
+      <div class="box-content">CONSEJOS DE SEGURIDAD INFORMÁTICA</div>
+    </div>
+
+    <div class="box-nav">
+      <div class="box-line"></div>
+      <div class="box-content">
+        <button
+          class="nav-tab"
+          [class.active]="activeTab === 'practicos'"
+          (click)="setTab('practicos')"
+        >
+          CONSEJOS PRÁCTICOS
+        </button>
+        <button
+          class="nav-tab"
+          [class.active]="activeTab === 'recomendaciones'"
+          (click)="setTab('recomendaciones')"
+        >
+          RECOMENDACIONES
+        </button>
+      </div>
+      <div class="box-line"></div>
+    </div>
+
+    <div>
+      <div class="box-line"></div>
+      <div class="box-content">
+        <!-- Recomendaciones -->
+        <div *ngIf="activeTab === 'recomendaciones'" class="recommendations-content">
+          <div class="section-intro">
+            <h3>Recomendaciones Esenciales de Seguridad</h3>
+            <p>Sigue estas recomendaciones para mantener tu información segura en línea</p>
+          </div>
+
+          <div class="recommendations-grid">
+            <div
+              *ngFor="let rec of recomendaciones"
+              class="recommendation-card"
+              [class]="getPrioridadClass(rec.prioridad)"
+            >
+              <div class="card-header">
+                <span class="priority-badge" [class]="'badge-' + rec.prioridad">
+                  {{ rec.prioridad.toUpperCase() }}
+                </span>
+                <h4 class="recommendation-title">{{ rec.titulo }}</h4>
+              </div>
+              <p class="recommendation-desc">{{ rec.descripcion }}</p>
+              <div class="recommendation-details">
+                <div class="details-title">Detalles importantes:</div>
+                <ul class="details-list">
+                  <li *ngFor="let detalle of rec.detalles">{{ detalle }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Consejos Prácticos -->
+        <div *ngIf="activeTab === 'practicos'" class="practicos-content">
+          <div class="section-intro">
+            <h3>Consejos Prácticos para el Día a Día</h3>
+            <p>Aplica estos consejos prácticos para mejorar tu seguridad informática</p>
+          </div>
+
+          <div class="consejos-grid">
+            <div *ngFor="let consejo of consejosPracticos" class="consejo-card">
+              <div class="consejo-categoria">{{ consejo.categoria }}</div>
+              <h4 class="consejo-titulo">{{ consejo.titulo }}</h4>
+              <p class="consejo-descripcion">{{ consejo.descripcion }}</p>
+              <div class="consejo-footer">
+                <span class="consejo-tag">Práctico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box-line"></div>
+    </div>
+
+    <div class="box-footer">
+      <div class="box-line"></div>
+      <div class="box-content">
+        <div class="footer-content">
+          <div class="footer-stats">
+            <span class="stat-item">
+              <strong>{{ recomendaciones.length }}</strong> Recomendaciones
+            </span>
+            <span class="stat-item">
+              <strong>{{ consejosPracticos.length }}</strong> Consejos Prácticos
+            </span>
+          </div>
+          <div class="footer-note">Mantén tu información segura siguiendo estas prácticas</div>
+        </div>
+      </div>
+      <div class="box-line"></div>
+    </div>
+  </div>
+</div>
